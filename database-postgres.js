@@ -7,8 +7,15 @@ const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString,
     ssl: {
-        rejectUnauthorized: false, // Required for Supabase/Heroku in some configs
+        rejectUnauthorized: false,
     },
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+});
+
+pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
 });
 
 // Helper to run queries similarly to sqlite's db.run/db.all
@@ -19,14 +26,20 @@ const db = {
     all: (text, params, callback) => {
         pool.query(text, params)
             .then(res => callback(null, res.rows))
-            .catch(err => callback(err));
+            .catch(err => {
+                console.error("DB All Error:", err.message);
+                callback(err);
+            });
     },
 
     // Shim for SQLite's db.get (returns single row)
     get: (text, params, callback) => {
         pool.query(text, params)
             .then(res => callback(null, res.rows[0]))
-            .catch(err => callback(err));
+            .catch(err => {
+                console.error("DB Get Error:", err.message);
+                callback(err);
+            });
     },
 
     // Shim for SQLite's db.run (for INSERT/UPDATE/DELETE)
