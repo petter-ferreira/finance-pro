@@ -4,7 +4,7 @@ if (!user) {
     window.location.href = '/login.html';
 }
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 
 // Helper for auth headers
 const getHeaders = () => {
