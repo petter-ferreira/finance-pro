@@ -1,0 +1,6 @@
+node_modules
+.env
+credentials.txt
+loan_system.db
+uploads/
+.DS_Store

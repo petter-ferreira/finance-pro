@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data # Persist SQLite database (requires changing DB path in code to /app/data)
+      - ./uploads:/app/uploads # Persist uploaded photos
+    restart: always

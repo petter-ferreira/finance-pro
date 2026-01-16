@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - FinancePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #1e293b;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #334155;
+        }
+
+        .user-item:hover {
+            border-color: var(--primary);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            border-radius: 0.5rem;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Form adjustments for admin */
+        form {
+            max-width: 100%;
+            box-shadow: none;
+            padding: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <h1>🛠️ Painel Adm</h1>
+        <div id="header-actions">
+            <button onclick="logout()" style="background:none;border:none;color:white;font-size:0.9rem;">Sair</button>
+        </div>
+    </header>
+
+    <!-- Sidebar (Desktop) -->
+    <aside>
+        <h1>💎 FinancePro <span style="font-size:0.8rem; color:#94a3b8; display:block; font-weight:400;">Admin</span>
+        </h1>
+        <nav>
+            <button class="active">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+                Gerenciar Usuários
+            </button>
+            <button onclick="window.location.href='/index.html'">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                </svg>
+                Voltar ao Sistema
+            </button>
+            <button onclick="logout()" style="margin-top:auto; color: #ef4444;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
+                    <path
+                        d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+                </svg>
+                Sair
+            </button>
+        </nav>
+    </aside>
+
+    <main>
+        <!-- User Management Section -->
+        <div class="section active" style="display:block;">
+            <h2>Gerenciar Usuários</h2>
+
+            <div class="card-grid">
+                <!-- Create User Card -->
+                <div class="card">
+                    <h3>Criar Novo Usuário</h3>
+                    <p style="margin-bottom:1rem;">Adicione acesso ao sistema financeiro.</p>
+                    <form id="create-user-form">
+                        <input type="text" name="username" placeholder="Nome de Usuário" required>
+                        <input type="password" name="password" placeholder="Senha" required>
+                        <div style="display:flex; gap:10px;">
+                            <select name="role" style="flex:1;">
+                                <option value="user">Usuário Comum</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                            <input type="number" name="due_day" placeholder="Dia Venc." min="1" max="31" value="10"
+                                style="flex:1;">
+                        </div>
+                        <button type="submit" class="btn-primary">Criar Usuário</button>
+                    </form>
+                </div>
+
+                <!-- User List Card -->
+                <div class="card" style="grid-row: span 2;">
+                    <h3>Usuários Cadastrados</h3>
+                    <div id="users-list" class="user-list" style="margin-top:1rem;">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg>
+            <span>Usuários</span>
+        </button>
+        <button class="nav-item" onclick="window.location.href='/index.html'">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+            </svg>
+            <span>Sistema</span>
+        </button>
+    </nav>
+
+    <script>
+        const API_URL = '/api/users';
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!user || user.role !== 'admin') {
+            alert('Acesso negado');
+            window.location.href = '/login.html';
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await fetch(API_URL, {
+                    headers: { 'x-role': user.role }
+                });
+                const { data } = await res.json();
+                const list = document.getElementById('users-list');
+                list.innerHTML = '';
+
+                if (data) {
+                    data.forEach(u => {
+                        const div = document.createElement('div');
+                        div.className = 'user-item';
+
+                        const isActive = u.status !== 'inactive';
+                        const statusColor = isActive ? '#10b981' : '#ef4444'; // Green or Red
+                        const statusText = isActive ? 'Ativo' : 'Atrasado';
+                        const toggleText = isActive ? 'Bloquear' : 'Ativar';
+                        const toggleAction = isActive ? 'inactive' : 'active';
+                        const dueDay = u.due_day || 10;
+
+                        div.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:0.5rem; flex:1;">
+                                <div style="width:36px; height:36px; background:#334155; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; position:relative;">
+                                    👤
+                                    <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:${statusColor}; border-radius:50%; border:2px solid #1e293b;"></span>
+                                </div>
+                                <div>
+                                    <div style="font-weight:600; display:flex; align-items:center; gap:6px;">
+                                        ${u.username} 
+                                        <span style="font-size:0.65rem; color:${statusColor}; border:1px solid ${statusColor}; padding:1px 4px; border-radius:4px; text-transform:uppercase;">${statusText}</span>
+                                    </div>
+                                    <div style="font-size:0.75rem; color:#94a3b8">Vence dia ${dueDay} • ${u.role === 'admin' ? 'Admin' : 'Usuário'}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:0.5rem;">
+                                ${u.username !== 'admin' ? `
+                                    <button class="btn-danger" style="background:#3b82f6;" onclick="toggleStatus(${u.id}, '${toggleAction}')">${toggleText}</button>
+                                    <button class="btn-danger" onclick="deleteUser(${u.id})">Del</button>
+                                ` : ''}
+                            </div>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        document.getElementById('create-user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-role': user.role
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                e.target.reset();
+                loadUsers();
+            } else {
+                alert('Erro ao criar usuário');
+            }
+        });
+
+        async function toggleStatus(id, newStatus) {
+            await fetch(`${API_URL}/${id}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-role': user.role
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            loadUsers();
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Tem certeza?')) return;
+            await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-role': user.role }
+            });
+            loadUsers();
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+
+        loadUsers();
+    </script>
+</body>
+
+</html>
