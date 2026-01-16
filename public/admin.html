@@ -23,6 +23,19 @@
             border-color: var(--primary);
         }
 
+        .username-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        @media (min-width: 768px) {
+            .username-text {
+                max-width: 300px;
+            }
+        }
+
         .btn-danger {
             background: #ef4444;
             padding: 0.5rem 1rem;
@@ -64,13 +77,7 @@
                 </svg>
                 Gerenciar Usuários
             </button>
-            <button onclick="window.location.href='/index.html'">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
-                    <path
-                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                </svg>
-                Voltar ao Sistema
-            </button>
+
             <button onclick="logout()" style="margin-top:auto; color: #ef4444;">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
                     <path
@@ -126,13 +133,7 @@
             </svg>
             <span>Usuários</span>
         </button>
-        <button class="nav-item" onclick="window.location.href='/index.html'">
-            <svg viewBox="0 0 24 24">
-                <path
-                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-            </svg>
-            <span>Sistema</span>
-        </button>
+
     </nav>
 
     <script>
@@ -166,17 +167,17 @@
                         const dueDay = u.due_day || 10;
 
                         div.innerHTML = `
-                            <div style="display:flex; align-items:center; gap:0.5rem; flex:1;">
-                                <div style="width:36px; height:36px; background:#334155; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; position:relative;">
+                            <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width: 0;">
+                                <div style="width:36px; height:36px; background:#334155; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1rem; position:relative;">
                                     👤
                                     <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:${statusColor}; border-radius:50%; border:2px solid #1e293b;"></span>
                                 </div>
-                                <div>
+                                <div style="flex:1; min-width: 0;">
                                     <div style="font-weight:600; display:flex; align-items:center; gap:6px;">
-                                        ${u.username} 
-                                        <span style="font-size:0.65rem; color:${statusColor}; border:1px solid ${statusColor}; padding:1px 4px; border-radius:4px; text-transform:uppercase;">${statusText}</span>
+                                        <span class="username-text">${u.username}</span> 
+                                        <span style="font-size:0.65rem; color:${statusColor}; border:1px solid ${statusColor}; padding:1px 4px; border-radius:4px; text-transform:uppercase; flex-shrink:0;">${statusText}</span>
                                     </div>
-                                    <div style="font-size:0.75rem; color:#94a3b8">Vence dia ${dueDay} • ${u.role === 'admin' ? 'Admin' : 'Usuário'}</div>
+                                    <div style="font-size:0.75rem; color:#94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Vence dia ${dueDay} • ${u.role === 'admin' ? 'Admin' : 'Usuário'}</div>
                                 </div>
                             </div>
                             <div style="display:flex; gap:0.5rem;">
