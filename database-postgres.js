@@ -67,10 +67,14 @@ const initializeDatabase = async () => {
                 id SERIAL PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
+                full_name TEXT,
+                photo_path TEXT,
                 role TEXT NOT NULL DEFAULT 'user',
                 status TEXT DEFAULT 'active',
                 due_day INTEGER DEFAULT 10
             );
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name TEXT;
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS photo_path TEXT;
         `);
 
         await db.query(`

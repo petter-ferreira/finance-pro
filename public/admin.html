@@ -60,7 +60,7 @@
 
     <!-- Mobile Header -->
     <header class="mobile-header">
-        <h1>🛠️ Painel Adm</h1>
+        <img src="assets/logo.png" alt="FinancePro" style="height: 32px;">
         <div id="header-actions">
             <button onclick="logout()" style="background:none;border:none;color:white;font-size:0.9rem;">Sair</button>
         </div>
@@ -68,8 +68,11 @@
 
     <!-- Sidebar (Desktop) -->
     <aside>
-        <h1>💎 FinancePro <span style="font-size:0.8rem; color:#94a3b8; display:block; font-weight:400;">Admin</span>
-        </h1>
+        <div
+            style="padding: 1rem 1.5rem; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+            <img src="assets/logo.png" alt="FinancePro" style="width: 100%; max-width: 180px;">
+            <span style="font-size:0.8rem; color:#94a3b8; margin-top: 5px; font-weight:400;">Painel Admin</span>
+        </div>
         <nav>
             <button class="active">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">
@@ -99,16 +102,18 @@
                     <h3>Criar Novo Usuário</h3>
                     <p style="margin-bottom:1rem;">Adicione acesso ao sistema financeiro.</p>
                     <form id="create-user-form">
+                        <input type="text" name="full_name" placeholder="Nome Completo" required>
                         <input type="text" name="username" placeholder="Nome de Usuário" required>
                         <input type="password" name="password" placeholder="Senha" required>
-                        <div style="display:flex; gap:10px;">
-                            <select name="role" style="flex:1;">
+                        <div style="display:flex; gap:10px; margin-bottom: 1rem;">
+                            <select name="role" style="flex:1; margin-bottom:0;">
                                 <option value="user">Usuário Comum</option>
                                 <option value="admin">Administrador</option>
                             </select>
                             <input type="number" name="due_day" placeholder="Dia Venc." min="1" max="31" value="10"
-                                style="flex:1;">
+                                style="flex:1; margin-bottom:0;">
                         </div>
+                        <input type="file" name="photo" style="margin-bottom: 1rem;">
                         <button type="submit" class="btn-primary">Criar Usuário</button>
                     </form>
                 </div>
@@ -168,16 +173,16 @@
 
                         div.innerHTML = `
                             <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width: 0;">
-                                <div style="width:36px; height:36px; background:#334155; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1rem; position:relative;">
-                                    👤
+                                 <div style="width:36px; height:36px; background:#334155; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1rem; position:relative; overflow:hidden;">
+                                    ${u.photo_path ? `<img src="/${u.photo_path}" style="width:100%; height:100%; object-fit:cover;">` : '👤'}
                                     <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:${statusColor}; border-radius:50%; border:2px solid #1e293b;"></span>
                                 </div>
                                 <div style="flex:1; min-width: 0;">
                                     <div style="font-weight:600; display:flex; align-items:center; gap:6px;">
-                                        <span class="username-text">${u.username}</span> 
+                                        <span class="username-text">${u.full_name || u.username}</span> 
                                         <span style="font-size:0.65rem; color:${statusColor}; border:1px solid ${statusColor}; padding:1px 4px; border-radius:4px; text-transform:uppercase; flex-shrink:0;">${statusText}</span>
                                     </div>
-                                    <div style="font-size:0.75rem; color:#94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Vence dia ${dueDay} • ${u.role === 'admin' ? 'Admin' : 'Usuário'}</div>
+                                    <div style="font-size:0.75rem; color:#94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@${u.username} • Vence dia ${dueDay} • ${u.role === 'admin' ? 'Admin' : 'Usuário'}</div>
                                 </div>
                             </div>
                             <div style="display:flex; gap:0.5rem;">
@@ -198,15 +203,13 @@
         document.getElementById('create-user-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
 
             const res = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'x-role': user.role
                 },
-                body: JSON.stringify(data)
+                body: formData
             });
 
             if (res.ok) {

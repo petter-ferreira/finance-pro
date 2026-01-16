@@ -13,15 +13,22 @@
 
     <!-- Mobile Header -->
     <header class="mobile-header">
-        <h1>💎 FinancePro</h1>
-        <div id="header-actions">
-            <button onclick="logout()" style="background:none;border:none;color:white;font-size:0.9rem;">Sair</button>
+        <img src="assets/logo.png" alt="FinancePro" style="height: 32px;">
+        <div id="header-actions" style="display:flex; align-items:center; gap:10px;">
+            <div id="user-profile-mobile" style="display:flex; align-items:center; gap:8px;">
+                <!-- Filled by JS -->
+            </div>
+            <button onclick="logout()"
+                style="background:none;border:none;color:#ef4444;font-size:0.9rem;font-weight:600;">Sair</button>
         </div>
     </header>
 
     <!-- Desktop Sidebar (Visually hidden on mobile via CSS) -->
     <aside>
-        <h1>💎 FinancePro</h1>
+        <div
+            style="padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+            <img src="assets/logo.png" alt="FinancePro" style="width: 100%; max-width: 180px;">
+        </div>
         <nav>
             <button class="active" onclick="showSection('dashboard')">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;">

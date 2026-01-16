@@ -269,9 +269,24 @@ document.getElementById('form-payment').addEventListener('submit', async (e) => 
 });
 
 // Init
+renderUserProfile();
 loadDashboard();
+
+function renderUserProfile() {
+    const profileContainer = document.getElementById('user-profile-mobile');
+    if (!profileContainer || !user) return;
+
+    const photoHtml = user.photo_path
+        ? `<img src="/${user.photo_path}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border: 2px solid var(--primary);">`
+        : `<div style="width:32px; height:32px; border-radius:50%; background:#334155; display:flex; align-items:center; justify-content:center; font-size:0.8rem; border: 2px solid #334155;">👤</div>`;
+
+    profileContainer.innerHTML = `
+        <span style="font-size:0.85rem; font-weight:500; color:#cbd5e1;">${user.full_name || user.username}</span>
+        ${photoHtml}
+    `;
+}
 
 function logout() {
     localStorage.removeItem('user');
-    window.location.href = '/login.html'; // Fixed redirect
+    window.location.href = '/login.html';
 }
