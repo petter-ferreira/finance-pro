@@ -13,7 +13,9 @@
 
     <!-- Mobile Header -->
     <header class="mobile-header">
-        <img src="assets/logo.png" alt="FinancePro" style="height: 32px;">
+        <div class="logo-container" style="padding: 4px 12px;">
+            <img src="assets/logo.png" alt="FinancePro" style="height: 20px;">
+        </div>
         <div id="header-actions" style="display:flex; align-items:center; gap:10px;">
             <div id="user-profile-mobile" style="display:flex; align-items:center; gap:8px;">
                 <!-- Filled by JS -->
@@ -27,7 +29,9 @@
     <aside>
         <div
             style="padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
-            <img src="assets/logo.png" alt="FinancePro" style="width: 100%; max-width: 180px;">
+            <div class="logo-container">
+                <img src="assets/logo.png" alt="FinancePro" style="max-width: 140px;">
+            </div>
         </div>
         <nav>
             <button class="active" onclick="showSection('dashboard')">

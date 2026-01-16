@@ -34,6 +34,24 @@ body {
     /* Space for bottom nav */
 }
 
+/* Logo Styles */
+.logo-container {
+    background: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-container img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
 /* Header / Top Bar */
 .mobile-header {
     display: flex;

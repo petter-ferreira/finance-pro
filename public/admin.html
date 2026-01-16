@@ -60,7 +60,9 @@
 
     <!-- Mobile Header -->
     <header class="mobile-header">
-        <img src="assets/logo.png" alt="FinancePro" style="height: 32px;">
+        <div class="logo-container" style="padding: 4px 12px;">
+            <img src="assets/logo.png" alt="FinancePro" style="height: 20px;">
+        </div>
         <div id="header-actions">
             <button onclick="logout()" style="background:none;border:none;color:white;font-size:0.9rem;">Sair</button>
         </div>
@@ -70,8 +72,10 @@
     <aside>
         <div
             style="padding: 1rem 1.5rem; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
-            <img src="assets/logo.png" alt="FinancePro" style="width: 100%; max-width: 180px;">
-            <span style="font-size:0.8rem; color:#94a3b8; margin-top: 5px; font-weight:400;">Painel Admin</span>
+            <div class="logo-container">
+                <img src="assets/logo.png" alt="FinancePro" style="max-width: 140px;">
+            </div>
+            <span style="font-size:0.8rem; color:#94a3b8; margin-top: 10px; font-weight:400;">Painel Admin</span>
         </div>
         <nav>
             <button class="active">
