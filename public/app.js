@@ -333,13 +333,15 @@ document.getElementById('profile-form').onsubmit = async (e) => {
 
     if (res.ok) {
         const data = await res.json();
-        user.full_name = data.full_name;
-        if (data.photo_path) user.photo_path = data.photo_path;
-        localStorage.setItem('user', JSON.stringify(user));
-        renderUserProfile();
+        if (data.photo_path) {
+            user.photo_path = data.photo_path;
+            localStorage.setItem('user', JSON.stringify(user));
+            renderUserProfile();
+        }
         closeProfileModal();
-        alert('Perfil atualizado!');
+        alert('Foto de perfil atualizada!');
     } else {
-        alert('Erro ao atualizar perfil');
+        const error = await res.json();
+        alert(error.error || 'Erro ao atualizar foto de perfil');
     }
 };

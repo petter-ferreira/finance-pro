@@ -67,29 +67,25 @@ router.patch('/:id/status', isAdmin, (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
-// PATCH update own profile
+// PATCH update own profile (photo only)
 router.patch('/profile', upload.single('photo'), (req, res) => {
     const userId = req.headers['x-user-id'];
-    const { full_name } = req.body;
     const photo_path = req.file ? req.file.path : null;
 
     if (!userId) return res.status(403).json({ error: 'User ID required' });
 
-    let sql, params;
-    if (photo_path) {
-        sql = 'UPDATE users SET full_name = $1, photo_path = $2 WHERE id = $3';
-        params = [full_name, photo_path, userId];
-    } else {
-        sql = 'UPDATE users SET full_name = $1 WHERE id = $2';
-        params = [full_name, userId];
+    if (!photo_path) {
+        return res.status(400).json({ error: 'No photo provided' });
     }
+
+    const sql = 'UPDATE users SET photo_path = $1 WHERE id = $2';
+    const params = [photo_path, userId];
 
     db.query(sql, params)
         .then(() => {
             res.json({
-                message: 'Profile updated',
-                full_name,
-                photo_path: photo_path || undefined
+                message: 'Profile photo updated',
+                photo_path: photo_path
             });
         })
         .catch(err => res.status(500).json({ error: err.message }));
