@@ -37,12 +37,19 @@ router.post('/', isAdmin, upload.single('photo'), (req, res) => {
 
     if (!username || !password) return res.status(400).json({ error: 'Missing fields' });
 
-    db.query('INSERT INTO users (username, password, full_name, photo_path, role, status, due_day) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-        [username, password, full_name, photo_path, role || 'user', 'active', due_day || 10])
+    const sql = `INSERT INTO users (username, password, full_name, photo_path, role, status, due_day) 
+                 VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`;
+    const params = [username, password, full_name || null, photo_path, role || 'user', 'active', parseInt(due_day) || 10];
+
+    db.query(sql, params)
         .then(result => {
+            console.log("User created successfully:", result.rows[0]);
             res.json({ message: 'User created', id: result.rows[0].id });
         })
-        .catch(err => res.status(500).json({ error: err.message }));
+        .catch(err => {
+            console.error("Error creating user:", err);
+            res.status(500).json({ error: err.message });
+        });
 });
 
 // PATCH toggle status (Admin only)
