@@ -20,6 +20,16 @@ app.use('/api', (req, res, next) => {
     next();
 });
 
+// Simple test endpoint
+app.get('/api/test', (req, res) => {
+    res.json({
+        status: 'OK',
+        message: 'Server is running!',
+        timestamp: new Date().toISOString()
+    });
+});
+console.log('✓ Test route registered');
+
 app.use('/api/health', require('./routes/health'));
 console.log('✓ Health route registered');
 
