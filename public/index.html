@@ -217,6 +217,35 @@
     </div>
 
     <script src="app.js"></script>
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeProfileModal()">✕</div>
+            <h2>Minha Conta</h2>
+            <form id="profile-form">
+                <div style="text-align:center; margin-bottom: 1.5rem;">
+                    <div id="profile-preview-container"
+                        style="width:100px; height:100px; border-radius:50%; background:#334155; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; font-size:2.5rem; overflow:hidden; border: 3px solid var(--primary);">
+                        <!-- Filled by JS -->
+                    </div>
+                    <label class="btn-primary"
+                        style="padding: 8px 16px; font-size: 0.85rem; cursor: pointer; display: inline-block; width: auto; margin-bottom: 0;">
+                        Alterar Foto
+                        <input type="file" name="photo" id="profile-photo-input" style="display:none;"
+                            onchange="previewProfilePhoto(this)">
+                    </label>
+                </div>
+                <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">Nome
+                    Completo</label>
+                <input type="text" name="full_name" id="profile-fullname" placeholder="Seu nome">
+
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+                <button type="button" onclick="logout()"
+                    style="background:transparent; border:1px solid #ef4444; color:#ef4444; margin-top:0.5rem;">Sair da
+                    Conta</button>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

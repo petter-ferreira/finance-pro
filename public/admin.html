@@ -63,7 +63,7 @@
         <h1>💎 FinancePro</h1>
         <div id="header-actions">
             <div id="user-profile-mobile" style="display:flex; align-items:center; gap:10px; cursor:pointer;"
-                onclick="logout()" title="Clique para Sair">
+                onclick="openProfileModal()" title="Minha Conta">
                 <!-- Filled by JS -->
             </div>
         </div>
@@ -246,6 +246,60 @@
             window.location.href = '/login.html';
         }
 
+        function openProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            const preview = document.getElementById('profile-preview-container');
+            const nameInput = document.getElementById('profile-fullname');
+
+            nameInput.value = user.full_name || '';
+            preview.innerHTML = user.photo_path
+                ? `<img src="/${user.photo_path}" style="width:100%; height:100%; object-fit:cover;">`
+                : '👤';
+
+            modal.classList.add('open');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.remove('open');
+        }
+
+        function previewProfilePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profile-preview-container').innerHTML =
+                        `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('profile-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const res = await fetch('/api/users/profile', {
+                method: 'PATCH',
+                headers: {
+                    'x-user-id': user.id
+                },
+                body: formData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                user.full_name = data.full_name;
+                if (data.photo_path) user.photo_path = data.photo_path;
+                localStorage.setItem('user', JSON.stringify(user));
+                renderUserProfile();
+                closeProfileModal();
+                alert('Perfil atualizado!');
+                loadUsers(); // Refresh list if on admin
+            } else {
+                alert('Erro ao atualizar perfil');
+            }
+        };
+
         function renderUserProfile() {
             const profileContainer = document.getElementById('user-profile-mobile');
             if (!profileContainer || !user) return;
@@ -263,6 +317,35 @@
         renderUserProfile();
         loadUsers();
     </script>
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeProfileModal()">✕</div>
+            <h2>Minha Conta</h2>
+            <form id="profile-form">
+                <div style="text-align:center; margin-bottom: 1.5rem;">
+                    <div id="profile-preview-container"
+                        style="width:100px; height:100px; border-radius:50%; background:#334155; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; font-size:2.5rem; overflow:hidden; border: 3px solid var(--primary);">
+                        <!-- Filled by JS -->
+                    </div>
+                    <label class="btn-primary"
+                        style="padding: 8px 16px; font-size: 0.85rem; cursor: pointer; display: inline-block; width: auto; margin-bottom: 0;">
+                        Alterar Foto
+                        <input type="file" name="photo" id="profile-photo-input" style="display:none;"
+                            onchange="previewProfilePhoto(this)">
+                    </label>
+                </div>
+                <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">Nome
+                    Completo</label>
+                <input type="text" name="full_name" id="profile-fullname" placeholder="Seu nome">
+
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+                <button type="button" onclick="logout()"
+                    style="background:transparent; border:1px solid #ef4444; color:#ef4444; margin-top:0.5rem;">Sair da
+                    Conta</button>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

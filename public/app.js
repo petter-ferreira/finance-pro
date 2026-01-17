@@ -290,3 +290,56 @@ function logout() {
     localStorage.removeItem('user');
     window.location.href = '/login.html';
 }
+
+function openProfileModal() {
+    const modal = document.getElementById('profile-modal');
+    const preview = document.getElementById('profile-preview-container');
+    const nameInput = document.getElementById('profile-fullname');
+
+    nameInput.value = user.full_name || '';
+    preview.innerHTML = user.photo_path
+        ? `<img src="/${user.photo_path}" style="width:100%; height:100%; object-fit:cover;">`
+        : '👤';
+
+    modal.classList.add('open');
+}
+
+function closeProfileModal() {
+    document.getElementById('profile-modal').classList.remove('open');
+}
+
+function previewProfilePhoto(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profile-preview-container').innerHTML =
+                `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.getElementById('profile-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const res = await fetch('/api/users/profile', {
+        method: 'PATCH',
+        headers: {
+            'x-user-id': user.id
+        },
+        body: formData
+    });
+
+    if (res.ok) {
+        const data = await res.json();
+        user.full_name = data.full_name;
+        if (data.photo_path) user.photo_path = data.photo_path;
+        localStorage.setItem('user', JSON.stringify(user));
+        renderUserProfile();
+        closeProfileModal();
+        alert('Perfil atualizado!');
+    } else {
+        alert('Erro ao atualizar perfil');
+    }
+};
