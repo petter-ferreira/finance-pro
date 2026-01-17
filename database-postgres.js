@@ -72,10 +72,10 @@ const initializeDatabase = async () => {
                 role TEXT NOT NULL DEFAULT 'user',
                 status TEXT DEFAULT 'active',
                 due_day INTEGER DEFAULT 10
-            );
-            ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name TEXT;
-            ALTER TABLE users ADD COLUMN IF NOT EXISTS photo_path TEXT;
+            )
         `);
+        await db.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name TEXT');
+        await db.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS photo_path TEXT');
 
         await db.query(`
             CREATE TABLE IF NOT EXISTS customers (

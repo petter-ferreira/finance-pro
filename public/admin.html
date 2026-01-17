@@ -155,11 +155,16 @@
                 const res = await fetch(API_URL, {
                     headers: { 'x-role': user.role }
                 });
-                const { data } = await res.json();
+                const result = await res.json();
                 const list = document.getElementById('users-list');
                 list.innerHTML = '';
 
-                if (data) {
+                if (res.ok) {
+                    const data = result.data;
+                    if (!data || data.length === 0) {
+                        list.innerHTML = '<div style="padding:1rem; text-align:center; color:#94a3b8;">Nenhum usuário encontrado.</div>';
+                        return;
+                    }
                     data.forEach(u => {
                         const div = document.createElement('div');
                         div.className = 'user-item';
