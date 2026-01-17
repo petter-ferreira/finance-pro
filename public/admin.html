@@ -289,31 +289,36 @@
             }
         }
 
-        document.getElementById('profile-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
 
-            const res = await fetch('/api/users/profile', {
-                method: 'PATCH',
-                headers: {
-                    'x-user-id': user.id
-                },
-                body: formData
-            });
+        const profileForm = document.getElementById('profile-form');
+        if (profileForm) {
+            profileForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
 
-            if (res.ok) {
-                const data = await res.json();
-                user.full_name = data.full_name;
-                if (data.photo_path) user.photo_path = data.photo_path;
-                localStorage.setItem('user', JSON.stringify(user));
-                renderUserProfile();
-                closeProfileModal();
-                alert('Perfil atualizado!');
-                loadUsers(); // Refresh list if on admin
-            } else {
-                alert('Erro ao atualizar perfil');
-            }
-        };
+                const res = await fetch('/api/users/profile', {
+                    method: 'PATCH',
+                    headers: {
+                        'x-user-id': user.id
+                    },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    user.full_name = data.full_name;
+                    if (data.photo_path) user.photo_path = data.photo_path;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    renderUserProfile();
+                    closeProfileModal();
+                    alert('Perfil atualizado!');
+                    loadUsers(); // Refresh list if on admin
+                } else {
+                    alert('Erro ao atualizar perfil');
+                }
+            };
+        }
+
 
         function renderUserProfile() {
             const profileContainer = document.getElementById('user-profile-mobile');
