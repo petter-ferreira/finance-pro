@@ -350,6 +350,7 @@ th {
         padding: 0 0.5rem;
         background: linear-gradient(to right, #10b981, #34d399);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         letter-spacing: -0.5px;
         filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.2));
