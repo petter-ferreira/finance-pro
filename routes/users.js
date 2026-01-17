@@ -23,11 +23,18 @@ const isAdmin = (req, res, next) => {
 
 // GET all users (Admin only)
 router.get('/', isAdmin, (req, res) => {
+    console.log('🔍 GET /api/users called');
+    console.log('Headers:', req.headers);
+
     db.query('SELECT id, username, full_name, photo_path, role, status, due_day FROM users')
         .then(result => {
+            console.log('✅ Query successful, rows:', result.rows.length);
             res.json({ data: result.rows });
         })
-        .catch(err => res.status(500).json({ error: err.message }));
+        .catch(err => {
+            console.error('❌ Query error:', err.message);
+            res.status(500).json({ error: err.message });
+        });
 });
 
 // POST create user (Admin only)
