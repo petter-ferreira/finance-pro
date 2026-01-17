@@ -294,9 +294,7 @@ function logout() {
 function openProfileModal() {
     const modal = document.getElementById('profile-modal');
     const preview = document.getElementById('profile-preview-container');
-    const nameInput = document.getElementById('profile-fullname');
 
-    nameInput.value = user.full_name || '';
     preview.innerHTML = user.photo_path
         ? `<img src="/${user.photo_path}" style="width:100%; height:100%; object-fit:cover;">`
         : '👤';
