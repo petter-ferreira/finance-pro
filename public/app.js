@@ -277,11 +277,11 @@ function renderUserProfile() {
     if (!profileContainer || !user) return;
 
     const photoHtml = user.photo_path
-        ? `<img src="/${user.photo_path}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border: 2px solid var(--primary);">`
-        : `<div style="width:32px; height:32px; border-radius:50%; background:#334155; display:flex; align-items:center; justify-content:center; font-size:0.8rem; border: 2px solid #334155;">👤</div>`;
+        ? `<img src="/${user.photo_path}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 2px solid var(--primary);">`
+        : `<div style="width:40px; height:40px; border-radius:50%; background:#334155; display:flex; align-items:center; justify-content:center; font-size:1.2rem; border: 2px solid #334155;">👤</div>`;
 
     profileContainer.innerHTML = `
-        <span style="font-size:0.85rem; font-weight:500; color:#cbd5e1;">${user.full_name || user.username}</span>
+        <span style="font-size:1rem; font-weight:600; color:#fff;">${user.full_name || user.username}</span>
         ${photoHtml}
     `;
 }
