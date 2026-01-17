@@ -152,15 +152,22 @@
 
         async function loadUsers() {
             try {
+                console.log('🔍 Loading users...');
                 const res = await fetch(API_URL, {
                     headers: { 'x-role': user.role }
                 });
+                console.log('📡 Response status:', res.status, res.ok);
+
                 const result = await res.json();
+                console.log('📦 Response data:', result);
+
                 const list = document.getElementById('users-list');
                 list.innerHTML = '';
 
                 if (res.ok) {
                     const data = result.data;
+                    console.log('✅ Data array:', data, 'Length:', data?.length);
+
                     if (!data || data.length === 0) {
                         list.innerHTML = '<div style="padding:1rem; text-align:center; color:#94a3b8;">Nenhum usuário encontrado.</div>';
                         return;
@@ -199,9 +206,12 @@
                         `;
                         list.appendChild(div);
                     });
+                    console.log('✅ Rendered', data.length, 'users');
+                } else {
+                    console.error('❌ Response not OK:', result);
                 }
             } catch (e) {
-                console.error(e);
+                console.error('❌ Error loading users:', e);
             }
         }
 
