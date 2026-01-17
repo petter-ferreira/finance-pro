@@ -61,68 +61,56 @@ aside {
 /* Bottom Navigation (Mobile) */
 .bottom-nav {
     position: fixed;
-    bottom: 12px;
-    /* Floating style looks more premium */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    /* Not full width for a floating effect */
-    height: 70px;
-    /* Slightly taller for bigger icons */
-    background: rgba(30, 41, 59, 0.95);
-    /* Semi-transparent Slate 800 */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    /* Very subtle top highlight */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    /* Slightly taller for larger icons */
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-around;
     align-items: center;
     z-index: 1000;
-    border-radius: 20px;
-    /* More rounded as requested */
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-    padding: 0 8px;
+    border-radius: 25px 25px 0 0;
+    /* Arredondado apenas em cima */
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .nav-item {
     background: none;
     border: none;
     color: var(--text-muted);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    width: 64px;
-    /* Fixed width for better layout */
-    height: 54px;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 14px;
+    transition: all 0.2s ease;
 }
 
 .nav-item.active {
     color: var(--primary);
-    background: rgba(16, 185, 129, 0.1);
-    /* Subtle emerald glow */
 }
 
 .nav-item svg {
-    width: 28px;
-    /* Larger icons as requested */
-    height: 28px;
+    width: 32px;
+    /* Ícones ainda maiores */
+    height: 32px;
     fill: currentColor;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .nav-item.active svg {
-    transform: translateY(-2px);
+    transform: scale(1.1);
 }
 
 .nav-item span {
-    font-weight: 500;
-    transition: opacity 0.3s ease;
+    font-weight: 600;
 }
 
 /* Main Content */
