@@ -21,13 +21,9 @@ router.get('/', (req, res) => {
     const userId = req.headers['x-user-id'];
     if (!userId) return res.status(403).json({ error: 'User ID required' });
 
-    const sql = 'SELECT * FROM customers WHERE user_id = $1 ORDER BY name';
-    db.all(sql, [userId], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ data: rows });
-    });
+    db.query('SELECT * FROM customers WHERE user_id = $1 ORDER BY name', [userId])
+        .then(result => res.json({ data: result.rows }))
+        .catch(err => res.status(500).json({ error: err.message }));
 });
 
 // GET single customer and their history
@@ -38,15 +34,17 @@ router.get('/:id', (req, res) => {
     const sqlCustomer = 'SELECT * FROM customers WHERE id = $1 AND user_id = $2';
     const sqlLoans = 'SELECT * FROM loans WHERE customer_id = $1';
 
-    db.get(sqlCustomer, [req.params.id, userId], (err, customer) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!customer) return res.status(404).json({ error: 'Customer not found or access denied' });
+    db.query(sqlCustomer, [req.params.id, userId])
+        .then(customerResult => {
+            const customer = customerResult.rows[0];
+            if (!customer) return res.status(404).json({ error: 'Customer not found or access denied' });
 
-        db.all(sqlLoans, [req.params.id], (err, loans) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ customer, loans });
-        });
-    });
+            return db.query(sqlLoans, [req.params.id])
+                .then(loansResult => {
+                    res.json({ customer, loans: loansResult.rows });
+                });
+        })
+        .catch(err => res.status(500).json({ error: err.message }));
 });
 
 // POST create customer
@@ -73,18 +71,6 @@ router.post('/', upload.single('photo'), (req, res) => {
             });
         })
         .catch(err => res.status(500).json({ error: err.message }));
-
-    /*
-    db.run(sql, params, function (err) {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({
-            message: 'Customer created successfully',
-            data: { id: this.lastID, ...req.body, photo_path }
-        });
-    });
-    */
 });
 
 module.exports = router;

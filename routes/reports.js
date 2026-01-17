@@ -34,10 +34,9 @@ router.get('/payments', (req, res) => {
 
     sql += ` ORDER BY p.date DESC`;
 
-    db.all(sql, params, (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ data: rows });
-    });
+    db.query(sql, params)
+        .then(result => res.json({ data: result.rows }))
+        .catch(err => res.status(500).json({ error: err.message }));
 });
 
 module.exports = router;
